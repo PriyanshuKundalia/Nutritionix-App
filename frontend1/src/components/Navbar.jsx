@@ -44,6 +44,7 @@ export default function Navbar() {
             <NavLink to="/profile" text="Profile" />
             <NavLink to="/mealplanner" text="Meal Planner" />
             <NavLink to="/workoutplanner" text="Workout Planner" />
+            <NavLink to="/goals" text="Goals" />
             <button
               onClick={handleLogout}
               style={{
