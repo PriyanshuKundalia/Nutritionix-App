@@ -13,7 +13,6 @@ import (
 
 	"nutritionix/backend/config"
 	"nutritionix/backend/handlers"
-	"nutritionix/backend/middleware"
 	"nutritionix/backend/utils"
 
 	"github.com/gin-contrib/cors"
@@ -327,16 +326,16 @@ func main() {
 		workouts.DELETE("/:id", handlers.DeleteWorkout)
 	}
 
-	// Goal routes with auth middleware
-	goals := r.Group("/goals")
-	goals.Use(middleware.AuthMiddleware())
-	{
-		goals.POST("/", handlers.CreateOrUpdateGoal)
-		goals.GET("/", handlers.GetGoals)
-		goals.PUT("/:id", handlers.UpdateGoal)
-		goals.DELETE("/:id", handlers.DeleteGoal)
-		goals.PUT("/:id/restore", handlers.RestoreGoal)
-	}
+	// Goal routes with auth middleware - DISABLED (requires mobile step counter)
+	// goals := r.Group("/goals")
+	// goals.Use(middleware.AuthMiddleware())
+	// {
+	// 	goals.POST("/", handlers.CreateOrUpdateGoal)
+	// 	goals.GET("/", handlers.GetGoals)
+	// 	goals.PUT("/:id", handlers.UpdateGoal)
+	// 	goals.DELETE("/:id", handlers.DeleteGoal)
+	// 	goals.PUT("/:id/restore", handlers.RestoreGoal)
+	// }
 
 	// Notification routes with auth middleware
 	notifications := r.Group("/notifications")
@@ -350,7 +349,7 @@ func main() {
 	}
 
 	// Background scheduled jobs
-	go scheduleDaily(9, 0, runOverdueGoalNotifications)
+	// go scheduleDaily(9, 0, runOverdueGoalNotifications) // DISABLED - Goals feature removed
 	go scheduleDaily(8, 0, runTomorrowWorkoutReminders)
 	go func() {
 		ticker := time.NewTicker(30 * time.Minute)

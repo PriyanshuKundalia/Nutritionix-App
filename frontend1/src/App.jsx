@@ -8,7 +8,6 @@ import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
 import MealPlanner from './pages/MealPlanner';
 import WorkoutPlanner from './pages/WorkoutPlanner';
-import GoalsPage from './pages/GoalsPage'; // Added import for Goals page
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import { AuthProvider } from './contexts/AuthContext';  // Import AuthProvider
 
@@ -51,14 +50,6 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <WorkoutPlanner />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/goals"
-            element={
-              <ProtectedRoute>
-                <GoalsPage />
               </ProtectedRoute>
             }
           />
