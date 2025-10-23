@@ -7,7 +7,6 @@ export default function Dashboard() {
   const [userData, setUserData] = useState(null);
   const [meals, setMeals] = useState([]);
   const [workouts, setWorkouts] = useState([]);
-  const [goals, setGoals] = useState([]);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
 
@@ -40,7 +39,7 @@ export default function Dashboard() {
 
       try {
         // Fetch all data in parallel
-        const [userResponse, mealsResponse, workoutsResponse, goalsResponse] = await Promise.all([
+        const [userResponse, mealsResponse, workoutsResponse] = await Promise.all([
           fetch('http://localhost:8080/user/profile', {
             headers: { Authorization: `Bearer ${token}` },
           }),
@@ -48,9 +47,6 @@ export default function Dashboard() {
             headers: { Authorization: `Bearer ${token}` },
           }),
           fetch('http://localhost:8080/user/workouts', {
-            headers: { Authorization: `Bearer ${token}` },
-          }),
-          fetch('http://localhost:8080/goals/', {
             headers: { Authorization: `Bearer ${token}` },
           }),
         ]);
@@ -68,11 +64,6 @@ export default function Dashboard() {
         if (workoutsResponse.ok) {
           const workoutsData = await workoutsResponse.json();
           setWorkouts(Array.isArray(workoutsData) ? workoutsData : []);
-        }
-
-        if (goalsResponse.ok) {
-          const goalsData = await goalsResponse.json();
-          setGoals(Array.isArray(goalsData) ? goalsData : []);
         }
 
       } catch (err) {
@@ -119,9 +110,6 @@ export default function Dashboard() {
   last7Days.setDate(last7Days.getDate() - 7);
   const recentMeals = meals.filter(meal => new Date(meal.date) >= last7Days);
   const recentWorkouts = workouts.filter(workout => new Date(workout.date) >= last7Days);
-
-  // Active goals
-  const activeGoals = goals.filter(goal => !goal.is_deleted);
 
   if (loading) {
     return (
@@ -188,51 +176,10 @@ export default function Dashboard() {
             <a href="/workoutplanner" className="action-btn workout-btn">
               💪 Log Workout
             </a>
-            <a href="/goalspage" className="action-btn goals-btn">
-              🎯 View Goals
-            </a>
             <a href="/nutritionlog" className="action-btn nutrition-btn">
               📊 Nutrition Log
             </a>
           </div>
-        </div>
-
-        {/* Goals Progress */}
-        <div className="dashboard-card goals-progress">
-          <h2>Goals Progress</h2>
-          {activeGoals.length === 0 ? (
-            <div className="no-data">
-              <p>No active goals set</p>
-              <a href="/goalspage" className="link-btn">Set Your First Goal</a>
-            </div>
-          ) : (
-            <div className="goals-list">
-              {activeGoals.slice(0, 3).map(goal => (
-                <div key={goal.id} className="goal-item">
-                  <div className="goal-info">
-                    <span className="goal-title">{goal.goal_type}</span>
-                    <span className="goal-target">Target: {goal.target_value}</span>
-                  </div>
-                  <div className="goal-progress">
-                    <div className="progress-bar">
-                      <div 
-                        className="progress-fill" 
-                        style={{ 
-                          width: `${Math.min(100, (goal.current_value / goal.target_value) * 100)}%` 
-                        }}
-                      ></div>
-                    </div>
-                    <span className="progress-text">
-                      {goal.current_value} / {goal.target_value}
-                    </span>
-                  </div>
-                </div>
-              ))}
-              {activeGoals.length > 3 && (
-                <a href="/goalspage" className="link-btn">View All Goals</a>
-              )}
-            </div>
-          )}
         </div>
 
         {/* Recent Activity */}
@@ -246,10 +193,6 @@ export default function Dashboard() {
             <div className="activity-item">
               <span className="activity-icon">💪</span>
               <span className="activity-text">{recentWorkouts.length} workouts completed</span>
-            </div>
-            <div className="activity-item">
-              <span className="activity-icon">🎯</span>
-              <span className="activity-text">{activeGoals.length} active goals</span>
             </div>
           </div>
         </div>
