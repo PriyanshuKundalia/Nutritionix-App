@@ -1,0 +1,72 @@
+Navbar styling
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: linear-gradient(90deg, #232526, #363636);
+  padding: 12px 0;
+  z-index: 1000;
+  box-shadow: 0 2px 8px rgba(44, 62, 80, 0.09);
+  display: flex;
+  justify-content: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+nav div {
+  display: flex;
+  gap: 26px;
+  align-items: center;
+  font-size: 1.13rem;
+}
+
+nav a {
+  color: #34b3a0;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 5px 12px;
+  border-radius: 4px;
+  transition: background 0.2s, color 0.2s;
+}
+nav a:hover {
+  background: #262626;
+  color: #2ecc71;
+}
+
+nav button {
+  margin-left: 16px;
+  padding: 8px 20px;
+  border-radius: 6px;
+  background: #27ae60;
+  color: white;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+nav button:hover {
+  background: #219150;
+}
+
+/* Space content below fixed navbar */
+#root {
+  padding-top: 65px; /* Adjust based on navbar height */
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  nav {
+    padding: 10px 5px;
+  }
+  nav div {
+    gap: 15px;
+    font-size: 1rem;
+  }
+  nav button {
+    padding: 7px 14px;
+    font-size: 0.95rem;
+  }
+  #root {
+    padding-top: 70px;
+  }
+}
